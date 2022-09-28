@@ -76,4 +76,22 @@ const findUserByName = (name) => {
     return users['users_list'].filter( (user) => user['name'] === name); 
 }
 
+// find users by a certain ID
+app.get('/users/:id', (req, res) => {
+    const id = req.params['id']; //or req.params.id
+    let result = findUserById(id);
+    if (result === undefined || result.length == 0)
+        res.status(404).send('Resource not found.');
+    else {
+        result = {users_list: result};
+        res.send(result);
+    }
+});
+
+// return the user of a certain ID
+function findUserById(id) {
+    return users['users_list'].find( (user) => user['id'] === id); // or line below
+    //return users['users_list'].filter( (user) => user['id'] === id);
+}
+
 // finished step 4 COMMIT CHANGES to backendBranch
