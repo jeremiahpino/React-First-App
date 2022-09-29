@@ -13,12 +13,10 @@ app.get('/', (req, res) => {
     res.send('Hello World!');
 });
 
-
 // backend server listening to incoming http requests on specified port number
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
 });
-
 
 // list of users 
 const users = { 
@@ -57,11 +55,28 @@ const users = {
 //     res.send(users);
 // });
 
+// -- HTTP Methods --
 
-// query a certain user by name
+// query (get) users by name
 app.get('/users', (req, res) => {
+
     const name = req.query.name;
-    if (name != undefined){
+    const job = req.query.job;
+
+    // if name and job have been assigned with a value
+    if ((name != undefined) && (job != undefined)){
+        
+        // store found name in userName 
+        let userNameJob = findUserByNameJob(name, job);
+
+        // find names and jobs found in user's list
+        userNameJob = {users_list: userNameJob}
+       
+        // send back names and jobs specified 
+        res.send(userNameJob)
+        
+    }
+    else if (name != undefined){
         let result = findUserByName(name);
         result = {users_list: result};
         res.send(result);
@@ -71,12 +86,7 @@ app.get('/users', (req, res) => {
     }
 });
 
-// find a particular name in the user's list
-const findUserByName = (name) => { 
-    return users['users_list'].filter( (user) => user['name'] === name); 
-}
-
-// find users by a certain ID
+// query (get) users by id
 app.get('/users/:id', (req, res) => {
     const id = req.params['id']; //or req.params.id
     let result = findUserById(id);
@@ -88,10 +98,59 @@ app.get('/users/:id', (req, res) => {
     }
 });
 
-// return the user of a certain ID
+// add user with POST command
+app.post('/users', (req, res) => {
+    const userToAdd = req.body;
+    addUser(userToAdd);
+    res.status(200).end();
+});
+
+// remove user by id
+app.delete('/users/:id', (req, res) => {
+    
+    // assign id 
+    const id = req.params['id'];
+
+    // user to be deleted
+    let removeUser = findUserById(id);
+    
+    // error checking 
+    if (removeUser === undefined || removeUser.length == 0)
+        res.status(404).send('Resource not found.');
+
+    else {
+        
+        // need index of where to remove user 1st argument
+        const userIndex = users['users_list'].indexOf(removeUser);
+
+        // remove user
+        users['users_list'].splice(userIndex, 1)
+
+        // return ok code
+        res.status(200).end();
+    }
+
+});
+
+// -- Functions --
+
+// find a particular name in the user's list
+const findUserByName = (name) => { 
+    return users['users_list'].filter( (user) => user['name'] === name); 
+}
+
+// find a particular name and job in the user's list
+const findUserByNameJob = (name, job) => {
+    return users['users_list'].filter( (user) => (user['name'] === name) || (user['job'] === job));
+}
+
+// find a particular id in the user's list
 function findUserById(id) {
     return users['users_list'].find( (user) => user['id'] === id); // or line below
     //return users['users_list'].filter( (user) => user['id'] === id);
 }
 
-// finished step 4 COMMIT CHANGES to backendBranch
+// add user
+function addUser(user){
+    users['users_list'].push(user);
+}
