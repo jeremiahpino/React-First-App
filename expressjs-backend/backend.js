@@ -5,7 +5,7 @@ const express = require('express');
 const app = express();
 const port = 5001;
 
-// process incoming data in JSON format
+// process incoming data in JSON format (Middleware)
 app.use(express.json());
 
 // see a '/', return Hello World!
