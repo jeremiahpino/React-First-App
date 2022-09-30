@@ -1,9 +1,15 @@
 // impoprt express module
 const express = require('express');
 
+// import cors
+const cors = require('cors');
+
 // create an instance of express
 const app = express();
 const port = 5001;
+
+// enable cors requests
+app.use(cors());
 
 // process incoming data in JSON format (Middleware)
 app.use(express.json());
