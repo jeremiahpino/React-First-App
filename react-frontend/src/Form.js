@@ -1,7 +1,10 @@
 import React, {useState} from 'react';
 
+
+// 
 function Form(props) {
 
+  // initialize object with empty properties
   const [person, setPerson] = useState(
      {
         name: "",
