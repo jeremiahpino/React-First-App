@@ -105,10 +105,17 @@ app.get('/users/:id', (req, res) => {
 });
 
 // add user with POST command
+// add user with 
 app.post('/users', (req, res) => {
+    
+    // user to add 
     const userToAdd = req.body;
+
+    // call add user function
     addUser(userToAdd);
-    res.status(200).end();
+
+    // send status code 201
+    res.status(201).end();
 });
 
 // remove user by id

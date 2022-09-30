@@ -23,26 +23,48 @@ function MyApp() {
       setCharacters(updated);
   }
 
-  // adds a new person (function called when submit button is clicked)
-  function updateList(person) {
+  // // adds a new person (function called when submit button is clicked)
+  // function updateList(person) {
 
-    // spread operator (...) makes a copy of all items in array
-    // and append another person object (not overwriting original array)
-    setCharacters([...characters, person]);
+  //   // spread operator (...) makes a copy of all items in array
+  //   // and append another person object (not overwriting original array)
+  //   setCharacters([...characters, person]);
+  // }
+
+
+  // return result data
+  function updateList(person) { 
+    makePostCall(person).then( result => {
+    
+      // check if result is valid and result status = 201
+      if (result && result.status === 201)
+       setCharacters([...characters, person] );
+    });
   }
 
-  // link to be
+  // 
   async function fetchAll(){
     try {
-       const response = await axios.get('http://localhost:5000/users');
+       const response = await axios.get('http://localhost:5001/users');
        return response.data.users_list;     
     }
     catch (error){
-       //We're not handling errors. Just logging into the console.
+       // We're not handling errors. Just logging into the console.
        console.log(error); 
        return false;         
     }
- }
+  }
+
+  async function makePostCall(person){
+  try {
+     const response = await axios.post('http://localhost:5001/users', person);
+     return response;
+  }
+  catch (error) {
+     console.log(error);
+     return false;
+  }
+  }
 
   useEffect(() => {
     fetchAll().then( result => {
