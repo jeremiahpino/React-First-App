@@ -9,6 +9,8 @@ function Form(props) {
      {
         name: "",
         job: "",
+        // new line
+        id: ""
      }
   );
 
@@ -25,10 +27,14 @@ function Form(props) {
   }
 
   function submitForm() {
+    
     props.handleSubmit(person);
-    setPerson({name: '', job: ''});
+
+    // added id
+    setPerson({name: '', job: '', id: ''});
   }
 
+  // form to submit name and job of a person
   return (
     <form>
     <input type="button" value="Submit" onClick={submitForm} />

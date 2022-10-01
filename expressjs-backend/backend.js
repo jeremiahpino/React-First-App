@@ -105,11 +105,20 @@ app.get('/users/:id', (req, res) => {
 });
 
 // add user with POST command
-// add user with 
 app.post('/users', (req, res) => {
     
+    // create unique id
+    randomID = generateRandomID();
+    console.log(randomID)
+
+    // assign unique id
+    req.body.id = randomID
+
     // user to add 
     const userToAdd = req.body;
+
+    console.log(userToAdd);
+    console.log(typeof(userToAdd))
 
     // call add user function
     addUser(userToAdd);
@@ -136,7 +145,7 @@ app.delete('/users/:id', (req, res) => {
         // need index of where to remove user 1st argument
         const userIndex = users['users_list'].indexOf(removeUser);
 
-        // remove user
+        // remove user by index 
         users['users_list'].splice(userIndex, 1)
 
         // return ok code
@@ -166,4 +175,41 @@ function findUserById(id) {
 // add user
 function addUser(user){
     users['users_list'].push(user);
+}
+
+// generate random ID
+function generateRandomID() {
+    
+    // initialize array
+    numArray = [];
+
+    // counter = 0
+    counter = 0;
+    
+    // generate three random number
+    while(counter < 3){
+
+        // generate random number between 0-9
+        randomNum = Math.floor(Math.random() * 10);
+
+        // add random number to array
+        numArray.push(randomNum);
+
+        // increment counter
+        counter = counter + 1;
+    }
+
+    // convert array to string
+    numString = numArray.join("");
+    //console.log("Number", numString)
+
+    // generate 3 random characters 
+    randomChars = Math.random().toString(36).substring(2,5);
+    //console.log("Char", randomChars);
+
+    // concat the two strings together
+    randomId = numString.concat(randomChars);
+    //console.log(randomId);
+
+    return randomId;
 }

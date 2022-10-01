@@ -1,11 +1,13 @@
 import React from 'react'
 
+// function displays the table columns (Name, Job, ID, and Remove)
 function TableHeader()  {
     return (
       <thead>
         <tr>
           <th>Name</th>
           <th>Job</th>
+          <th>ID</th>
           <th>Remove</th>
         </tr>
       </thead>
@@ -18,6 +20,7 @@ function TableBody(props) {
         <tr key={index}>
           <td>{row.name}</td>
            <td>{row.job}</td>
+           <td>{row.id}</td>
           <td>
             <button onClick={() => props.removeCharacter(index)}>Delete</button>
           </td>
