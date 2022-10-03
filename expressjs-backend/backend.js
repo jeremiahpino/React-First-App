@@ -24,7 +24,7 @@ app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
 });
 
-// list of users 
+// users object with users_list array of objects
 const users = { 
     users_list :
     [
@@ -63,10 +63,13 @@ const users = {
 
 // -- HTTP Methods --
 
-// query (get) users by name
+// query (get) users by name or by name and job
 app.get('/users', (req, res) => {
 
+    // get the name of the person
     const name = req.query.name;
+
+    // get the job of the person
     const job = req.query.job;
 
     // if name and job have been assigned with a value
@@ -123,8 +126,8 @@ app.post('/users', (req, res) => {
     // call add user function
     addUser(userToAdd);
 
-    // send status code 201
-    res.status(201).end();
+    // send status code 201 and user to be added (with ID)
+    res.status(201).send(userToAdd).end();
 });
 
 // remove user by id
@@ -172,7 +175,7 @@ function findUserById(id) {
     //return users['users_list'].filter( (user) => user['id'] === id);
 }
 
-// add user
+// add user to user's list
 function addUser(user){
     users['users_list'].push(user);
 }

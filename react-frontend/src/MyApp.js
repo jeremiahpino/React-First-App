@@ -17,6 +17,7 @@ function MyApp() {
   const [characters, setCharacters] = useState([]);
 
   function removeOneCharacter (index) {
+    
     const updated = characters.filter((character, i) => {
         return i !== index
       });
@@ -33,11 +34,18 @@ function MyApp() {
 
 
   // return result data
-  function updateList(person) { 
+  function updateList(person) {
+    
+    // 
     makePostCall(person).then( result => {
     
       // check if result is valid and result status = 201
       if (result && result.status === 201)
+  
+        // assign person with result.data (holds new ID generated)
+        person = result.data
+
+        // set the characters and display in table
        setCharacters([...characters, person] );
     });
   }
@@ -46,11 +54,16 @@ function MyApp() {
   async function fetchAll(){
     try {
        const response = await axios.get('http://localhost:5001/users');
+
+       // return list of users from backend
        return response.data.users_list;     
     }
     catch (error){
+
        // We're not handling errors. Just logging into the console.
        console.log(error); 
+
+       // return false if error arises
        return false;         
     }
   }
@@ -58,10 +71,16 @@ function MyApp() {
   async function makePostCall(person){
   try {
      const response = await axios.post('http://localhost:5001/users', person);
+
+     // pass response to caller
      return response;
   }
   catch (error) {
+
+    // console log error
      console.log(error);
+
+     // return false if error arises
      return false;
   }
   }

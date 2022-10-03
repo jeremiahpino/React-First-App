@@ -9,7 +9,7 @@ function Form(props) {
      {
         name: "",
         job: "",
-        // new line
+        // added id variable
         id: ""
      }
   );
@@ -30,8 +30,7 @@ function Form(props) {
     
     props.handleSubmit(person);
 
-    // added id
-    setPerson({name: '', job: '', id: ''});
+    setPerson({name: '', job: ''});
   }
 
   // form to submit name and job of a person

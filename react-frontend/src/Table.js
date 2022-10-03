@@ -14,6 +14,7 @@ function TableHeader()  {
     );
 }
 
+// added row.id 
 function TableBody(props) {
     const rows = props.characterData.map((row, index) => {
       return (
@@ -43,6 +44,5 @@ function Table (props) {
     </table>
   );
 }
-
 
 export default Table;
