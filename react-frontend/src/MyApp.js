@@ -11,27 +11,52 @@ import axios from 'axios';
 
 function MyApp() {
   
-  // empty state form (will add to it)
-  // when data changes useState updates the UI
-  // default value of empty array
+  // - empty state form (will add to it)
+  // - when data changes useState updates the UI
+  // - default value of empty array
+
+  // refer to characters to retrieve stat
+  // setCharacters to update the state
   const [characters, setCharacters] = useState([]);
 
-  function removeOneCharacter (index) {
+  // added row id to remove character id
+  function removeOneCharacter (index, rowID) {
     
+    // async function for delete
+    deleteUser(rowID);
+
+    // - filter creates new array and applies filter
+    // - testing an index vs. all the indices in the array, and 
+    // returning all but the one that is passed through
     const updated = characters.filter((character, i) => {
         return i !== index
       });
+
+      // re-render child components inside setCharacters
       setCharacters(updated);
   }
 
-  // // adds a new person (function called when submit button is clicked)
-  // function updateList(person) {
+  // delete async function 
+  async function deleteUser(id) {
+    try {
 
-  //   // spread operator (...) makes a copy of all items in array
-  //   // and append another person object (not overwriting original array)
-  //   setCharacters([...characters, person]);
-  // }
+      // delete a user by id
+      const response = await axios.delete('http://localhost:5001/users/' + id);
 
+      // return response to caller
+      return response;
+
+    }
+    catch(error) {
+
+      // report error
+      console.log(error);
+
+      // fail
+      return false;
+
+    }
+  }
 
   // return result data
   function updateList(person) {
@@ -43,16 +68,25 @@ function MyApp() {
       if (result && result.status === 201)
   
         // assign person with result.data (holds new ID generated)
-        person = result.data
+        person = result.data;
 
         // set the characters and display in table
        setCharacters([...characters, person] );
     });
   }
 
-  // 
+  // - async functions -
+  // - return value = A Promise which will be resolved with the 
+  //value returned by the async function, or rejected with an 
+  // exception thrown from, or uncaught within, the async function
+
+  // return list of users in the backend
   async function fetchAll(){
     try {
+
+      // - await call (non-blocking operation) allows frontend to 
+      // run other threads if needed
+      // await only valid in async functions 
        const response = await axios.get('http://localhost:5001/users');
 
        // return list of users from backend
@@ -68,6 +102,7 @@ function MyApp() {
     }
   }
 
+  // function that waits for a post to be made
   async function makePostCall(person){
   try {
      const response = await axios.post('http://localhost:5001/users', person);
@@ -85,6 +120,7 @@ function MyApp() {
   }
   }
 
+  // fetch all users in backend at start of app (on mount)
   useEffect(() => {
     fetchAll().then( result => {
      if (result)
@@ -94,9 +130,10 @@ function MyApp() {
 
   return (
     <div className="container">
+      {/* - pass removeOneCharacter function as a prop to Table */}
+      {/* - added prop is removeCharacter and value is return removeOneCharacter */}
       <Table characterData={characters} removeCharacter={removeOneCharacter} />
       <Form handleSubmit={updateList} />
-      {/* <Form /> */}
     </div>
   )
 }

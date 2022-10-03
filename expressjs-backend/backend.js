@@ -56,11 +56,6 @@ const users = {
     ]
  }
 
-// retrieving all users 
-//  app.get('/users', (req, res) => {
-//     res.send(users);
-// });
-
 // -- HTTP Methods --
 
 // query (get) users by name or by name and job
@@ -112,7 +107,7 @@ app.post('/users', (req, res) => {
     
     // create unique id
     randomID = generateRandomID();
-    console.log(randomID)
+    //console.log(randomID)
 
     // assign unique id
     req.body.id = randomID
@@ -120,8 +115,8 @@ app.post('/users', (req, res) => {
     // user to add 
     const userToAdd = req.body;
 
-    console.log(userToAdd);
-    console.log(typeof(userToAdd))
+    //console.log(userToAdd);
+    //console.log(typeof(userToAdd))
 
     // call add user function
     addUser(userToAdd);
@@ -151,7 +146,7 @@ app.delete('/users/:id', (req, res) => {
         // remove user by index 
         users['users_list'].splice(userIndex, 1)
 
-        // return ok code
+        // return status code 204 (delete sucessful)
         res.status(200).end();
     }
 
@@ -183,7 +178,7 @@ function addUser(user){
 // generate random ID
 function generateRandomID() {
     
-    // initialize array
+    // initialize number array
     numArray = [];
 
     // counter = 0
@@ -206,13 +201,38 @@ function generateRandomID() {
     numString = numArray.join("");
     //console.log("Number", numString)
 
-    // generate 3 random characters 
-    randomChars = Math.random().toString(36).substring(2,5);
-    //console.log("Char", randomChars);
+    // initialize characters array
+    charArray = [];
+
+    // all characters 
+    const allcharacters = 'abcdefghijklmnopqrstuvwxyz';
+
+    // length of all characters
+    const charactersLength = allcharacters.length;
+
+    // initialize counter
+    counter2 = 0;
+
+    // generate three random characters
+    while (counter2 < 3) {
+
+        // generate random character
+        randomChar = allcharacters.charAt(Math.floor(Math.random() * charactersLength));
+
+        // add random character to character array
+        charArray.push(randomChar);
+
+        // increment counter
+        counter2 = counter2 + 1;
+    }
+
+    // convert character array to string
+    charString = charArray.join("");
 
     // concat the two strings together
-    randomId = numString.concat(randomChars);
+    randomId = charString.concat(numString);
     //console.log(randomId);
 
+    // return random ID
     return randomId;
 }

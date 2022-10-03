@@ -23,7 +23,10 @@ function TableBody(props) {
            <td>{row.job}</td>
            <td>{row.id}</td>
           <td>
-            <button onClick={() => props.removeCharacter(index)}>Delete</button>
+            {/* - pass index through as a parameter, so the removeOneCharacter 
+            function knows which item to remove  */}
+            {/* added row.id to know which user to delete*/}
+            <button onClick={() => props.removeCharacter(index, row.id)}>Delete</button>
           </td>
         </tr>
       );
