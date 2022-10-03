@@ -147,7 +147,7 @@ app.delete('/users/:id', (req, res) => {
         users['users_list'].splice(userIndex, 1)
 
         // return status code 204 (delete sucessful)
-        res.status(200).end();
+        res.status(204).end();
     }
 
 });
